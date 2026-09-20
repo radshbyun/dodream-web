@@ -53,6 +53,9 @@
       background: rgba(3, 7, 18, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .brand {
@@ -61,6 +64,9 @@
       letter-spacing: 0.5px;
       color: #fff;
       text-decoration: none;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
 
     .brand span {
@@ -76,10 +82,15 @@
       font-weight: 600;
       text-decoration: none;
       transition: opacity 0.2s;
+      white-space: nowrap;
     }
 
     .back-link:hover {
       opacity: 0.8;
+    }
+
+    .txt-mobile-only {
+      display: none;
     }
 
     main {
@@ -299,20 +310,57 @@
       color: #64748B;
     }
 
+    /* =========================================================
+       모바일 전용 최적화 (헤더 1줄 정렬 & 여백 확보)
+       ========================================================= */
     @media (max-width: 860px) {
-      header { padding: 0 20px; }
-      main { padding: 40px 6% 80px; }
-      .contact-container { grid-template-columns: 1fr; gap: 40px; }
-      .form-col { padding: 30px 20px; }
-      .form-row { grid-template-columns: 1fr; gap: 14px; }
+      header {
+        height: 60px;
+        padding: 0 16px;
+      }
+      /* 모바일에서는 '두드림 영상자문센터' 텍스트 숨김 */
+      .brand span {
+        display: none;
+      }
+      .brand {
+        font-size: 1.05rem;
+      }
+      .back-link {
+        font-size: 0.85rem;
+      }
+      /* 긴 문구를 모바일용 짧은 문구로 교체 */
+      .txt-desktop {
+        display: none;
+      }
+      .txt-mobile-only {
+        display: inline;
+      }
+      main {
+        padding: 40px 6% 80px;
+      }
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .form-col {
+        padding: 30px 20px;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- 헤더 (모바일/PC 완벽 반응형 대응) -->
   <header>
     <a href="index.html" class="brand">Do:Dream <span>두드림 영상자문센터</span></a>
-    <a href="index.html" class="back-link">← 메인 화면으로 돌아가기</a>
+    <a href="index.html" class="back-link">
+      <span class="txt-desktop">← 메인 화면으로 돌아가기</span>
+      <span class="txt-mobile-only">← 메인으로</span>
+    </a>
   </header>
 
   <main>
