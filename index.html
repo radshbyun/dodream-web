@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>두드림 영상자문센터 | Do:Dream</title>
+  <!-- Pretendard 폰트 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg-black: #020408;
+      --signal-glow: #bae6fd;
+      --card-bg: rgba(6, 11, 24, 0.65);
+      --card-border: rgba(224, 242, 254, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard", -apple-system, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: #F8FAFC;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* 3D WebGL 배경 캔버스 */
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* 상단 헤더 */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: linear-gradient(to bottom, rgba(2, 4, 8, 0.85), transparent);
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    .brand span {
+      font-weight: 400;
+      color: #94A3B8;
+      font-size: 0.8rem;
+      margin-left: 6px;
+    }
+
+    /* 메인 스크롤 콘텐츠 컨테이너 */
+    main {
+      position: relative;
+      z-index: 10;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 10% 80px;
+    }
+
+    /* 인트로 히어로 섹션 */
+    #hero {
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .hero-container {
+      max-width: 800px;
+      padding: 24px;
+      border-radius: 20px;
+      background: radial-gradient(circle, rgba(2, 4, 8, 0.55) 0%, transparent 80%);
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 5vw, 3.3rem);
+      font-weight: 800;
+      line-height: 1.35;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      color: #FFFFFF;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: #CBD5E1;
+      letter-spacing: 0.5px;
+      margin-bottom: 40px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+    }
+
+    .scroll-indicator {
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      color: #94A3B8;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      animation: pulse 2.2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(6px); }
+    }
+
+    /* =========================================================
+       01. 소개 / 철학 섹션 (좌측 정렬 통일)
+       ========================================================= */
+    #philosophy {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .narrative-plain-block {
+      max-width: 580px;
+      margin-bottom: 120px;
+      text-align: left;
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .pos-left {
+      align-self: flex-start;
+      margin-left: 0;
+    }
+
+    .narrative-step-num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--signal-glow);
+      margin-bottom: 12px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .narrative-headline {
+      font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.95);
+    }
+
+    .narrative-body {
+      font-size: 1.05rem;
+      color: #E2E8F0;
+      line-height: 1.8;
+      font-weight: 400;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+    }
+
+    /* 브릿지 여백 */
+    .wave-interlude {
+      height: 35vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       02. 철학 / 특장점 섹션
+       ========================================================= */
+    #features {
+      align-items: center;
+      padding-bottom: 60px;
+    }
+
+    .section-lead-block {
+      max-width: 760px;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .grid-3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 1240px;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 38px 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(224, 242, 254, 0.4);
+      transform: translateY(-5px);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: #CBD5E1;
+      line-height: 1.7;
+    }
+
+    /* =========================================================
+       03. 전문 자문 및 협진 분야 섹션
+       ========================================================= */
+    #scope {
+      align-items: center;
+      padding-top: 80px;
+      padding-bottom: 60px;
+      min-height: auto;
+    }
+
+    .scope-container {
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .scope-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px 40px;
+      margin-top: 40px;
+    }
+
+    .scope-item {
+      display: flex;
+      align-items: baseline;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(224, 242, 254, 0.12);
+      transition: border-color 0.3s ease;
+    }
+
+    .scope-item:hover {
+      border-bottom-color: var(--signal-glow);
+    }
+
+    .scope-num {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--signal-glow);
+      margin-right: 20px;
+      letter-spacing: 1px;
+    }
+
+    .scope-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+    }
+
+    /* =========================================================
+       하단 네비게이션 메뉴 바 & 푸터 정보 영역
+       ========================================================= */
+    .site-footer {
+      position: relative;
+      z-index: 20;
+      padding: 80px 8% 100px;
+      background: linear-gradient(to top, rgba(2, 4, 8, 0.95), transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-top: 1px solid rgba(224, 242, 254, 0.08);
+      text-align: center;
+    }
+
+    .bottom-nav-grid {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 860px;
+      margin-bottom: 44px;
+    }
+
+    .bottom-nav-btn {
+      flex: 1 1 180px;
+      min-width: 160px;
+      padding: 16px 20px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(224, 242, 254, 0.15);
+      border-radius: 10px;
+      color: #E2E8F0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .bottom-nav-btn:hover {
+      background: rgba(30, 41, 59, 0.85);
+      border-color: var(--signal-glow);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(186, 230, 253, 0.12);
+    }
+
+    .footer-contact-info {
+      font-size: 0.84rem;
+      color: #94A3B8;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: #64748B;
+      letter-spacing: 0.5px;
+    }
+
+    /* 플로팅 CTA */
+    .floating-cta {
+      position: fixed;
+      bottom: 24px;
+      right: 28px;
+      background: #fae100;
+      color: #371d1e;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .floating-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75);
+    }
+
+    @media (max-width: 900px) {
+      header { padding: 0 20px; }
+      section { padding: 100px 6% 60px; }
+      #features { padding-bottom: 40px; }
+      #scope { padding-top: 40px; }
+      .pos-left { align-self: flex-start; margin: 0 0 60px 0; }
+      .grid-3-row { grid-template-columns: 1fr; gap: 18px; }
+      .glass-card { text-align: center; padding: 30px 20px; }
+      .scope-grid { grid-template-columns: 1fr; gap: 10px; }
+      .scope-text { font-size: 1.05rem; }
+      .bottom-nav-btn { flex: 1 1 45%; padding: 14px 10px; font-size: 0.88rem; }
+      .footer-contact-info { font-size: 0.76rem; line-height: 1.6; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="webgl-canvas"></canvas>
+
+  <header>
+    <div class="brand">Do:Dream <span>두드림 영상자문센터</span></div>
+  </header>
+
+  <a href="https://open.kakao.com/me/dodreamrad" target="_blank" rel="noopener noreferrer" class="floating-cta">
+    💬 자문 의뢰 바로 연결
+  </a>
+
+  <main>
+    <section id="hero">
+      <div class="hero-container">
+        <h1 class="hero-title">
+          신경두경부의 문을 두드리다,<br>
+          명확한 해답을 드리다.
+        </h1>
+        <p class="hero-sub">Do:Dream Neuro-Radiology Consulting</p>
+        <div class="scroll-indicator">· 아래로 스크롤하여 연결 ·</div>
+      </div>
+    </section>
+
+    <section id="philosophy">
+      <div class="narrative-plain-block pos-left">
+        <div class="narrative-step-num">01 / KNOCK</div>
+        <h2 class="narrative-headline">가장 낮은 문턱</h2>
+        <p class="narrative-body">
+          확신이 필요한 매 순간, 두드릴 수 있는 가장 가까운 문이 되겠습니다. 교수님의 곁에서 언제나 상시 대기합니다.
+        </p>
+      </div>
+
+      <div class="narrative-plain-block pos-left">
+        <div class="narrative-step-num">02 / RESPONSE</div>
+        <h2 class="narrative-headline">즉각적인 응답</h2>
+        <p class="narrative-body">
+          언제든 필요하실 때 즉각 응답합니다. 임상 현장의 고민을 언제나 함께합니다.
+        </p>
+      </div>
+
+      <div class="narrative-plain-block pos-left">
+        <div class="narrative-step-num">03 / PRECISION</div>
+        <h2 class="narrative-headline">치밀한 논리적 근거</h2>
+        <p class="narrative-body">
+          단순한 결론 통보를 지양합니다. 치밀한 추론의 과정을 탄탄한 논리에 담아 확신을 완성합니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="wave-interlude"></div>
+
+    <section id="features">
+      <div class="section-lead-block">
+        <div class="narrative-step-num">02 / WHAT WE STAND FOR</div>
+        <h2 class="narrative-headline">판독을 대행하지 않습니다.<br>협진을 함께합니다.</h2>
+      </div>
+      
+      <div class="grid-3-row">
+        <div class="glass-card">
+          <div class="narrative-step-num" style="margin-bottom: 8px;">01 / SINGLE DEDICATION</div>
+          <h3 class="card-title">신경두경부 단일 전담</h3>
+          <p class="card-desc">
+            분업화된 처리가 아닌 신경두경부 세부전공의가 오직 신경 파트만을 전담합니다. 최초 의뢰부터 모든 과정을 일관된 기준으로 책임집니다.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="narrative-step-num" style="margin-bottom: 8px;">02 / ENDLESS CARE</div>
+          <h3 class="card-title">끊임없이 함께하는 호흡</h3>
+          <p class="card-desc">
+            단발성 외주 소견 전달의 한계를 넘어섭니다. 수술 이후를 넘어 장기적 추적관찰까지 일관된 호흡으로 현장과 함께합니다.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="narrative-step-num" style="margin-bottom: 8px;">03 / ACADEMIC DRIVEN</div>
+          <h3 class="card-title">학술 기반의 최신 지견</h3>
+          <p class="card-desc">
+            국내외 최신 가이드라인과 임상 지견을 가장 빠르게 현장에 접목합니다. 학회 최전선에서 연구와 교류를 지속하며 의학계의 흐름을 선도합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="scope">
+      <div class="scope-container">
+        <div class="section-lead-block" style="text-align: left;">
+          <div class="narrative-step-num">03 / CLINICAL SCOPE</div>
+          <h2 class="narrative-headline">전문 자문 및 협진 분야</h2>
+          <p class="narrative-body" style="color: #94A3B8;">
+            신경두경부 세부전공에 특화된 정밀 영상 판독부터 임상 의사결정을 지원하는 다학제 협진까지 폭넓게 수행합니다.
+          </p>
+        </div>
+
+        <div class="scope-grid">
+          <div class="scope-item">
+            <span class="scope-num">01</span>
+            <span class="scope-text">뇌 CT · MRI · MRA 판독</span>
+          </div>
+          <div class="scope-item">
+            <span class="scope-num">02</span>
+            <span class="scope-text">두경부 분야 판독</span>
+          </div>
+          <div class="scope-item">
+            <span class="scope-num">03</span>
+            <span class="scope-text">척추 분야 판독</span>
+          </div>
+          <div class="scope-item">
+            <span class="scope-num">04</span>
+            <span class="scope-text">이미지 · 임상 경과 장기 리뷰</span>
+          </div>
+          <div class="scope-item">
+            <span class="scope-num">05</span>
+            <span class="scope-text">임상 컨퍼런스 참여</span>
+          </div>
+          <div class="scope-item">
+            <span class="scope-num">06</span>
+            <span class="scope-text">다학제 진료 참여</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="bottom-nav-grid">
+      <a href="#philosophy" class="bottom-nav-btn">센터소개</a>
+      <a href="#scope" class="bottom-nav-btn">자문/협진 분야</a>
+      <a href="doctor.html" class="bottom-nav-btn">의료진 소개 →</a>
+      <a href="contact.html" class="bottom-nav-btn">자문/상담문의 →</a>
+    </div>
+
+    <!-- 이메일 주소 변경 반영 -->
+    <p class="footer-contact-info">
+      EMAIL: RADSHBYUN@DODREAMRAD.COM &nbsp;|&nbsp; TEL: 010-4844-1526 &nbsp;|&nbsp; 카카오톡 검색: 두드림영상자문
+    </p>
+
+    <p class="footer-copy">© 두드림 영상자문센터 (Do:Dream Radiology Consulting). All rights reserved.</p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x020408, 0.007);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    function updateCamera() {
+      const isMobile = window.innerWidth < 768;
+      camera.position.set(0, 0, isMobile ? 86 : 68);
+    }
+    updateCamera();
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const particleCount = 24000;
+    const geometry = new THREE.BufferGeometry();
+    
+    const currentPositions = new Float32Array(particleCount * 3);
+    const initialPositions = new Float32Array(particleCount * 3);
+    const brainPositions = new Float32Array(particleCount * 3);
+    const wavePositions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    const cWhite = new THREE.Color(0xffffff);
+    const cCrispIce = new THREE.Color(0xe0f2fe);
+    const cLaserBlue = new THREE.Color(0x7dd3fc);
+
+    for (let i = 0; i < particleCount; i++) {
+      const i3 = i * 3;
+      initialPositions[i3] = (Math.random() - 0.5) * 180;
+      initialPositions[i3 + 1] = (Math.random() - 0.5) * 180;
+      initialPositions[i3 + 2] = (Math.random() - 0.5) * 160;
+
+      const isAmbientDust = i >= 19600;
+
+      if (!isAmbientDust) {
+        if (i < 15500) {
+          const u = Math.random();
+          const v = Math.random();
+          const theta = u * 2.0 * Math.PI;
+          const phi = Math.acos(2.0 * v - 1.0);
+          const gyri = Math.sin(theta * 8.0) * Math.cos(phi * 8.0) * 1.5 + Math.sin(theta * 16.0) * 0.4;
+          const baseRadius = 15.5 + gyri;
+
+          let z = baseRadius * Math.cos(phi) * 1.38;
+          let y = baseRadius * Math.sin(phi) * Math.sin(theta) * 1.1 + 2.0;
+          let x = baseRadius * Math.sin(phi) * Math.cos(theta) * 1.18;
+
+          if (z > 4.0 && y > 0) y += Math.sin((z / 20.0) * Math.PI) * 2.2;
+          if (z < -3.0 && y > -2.0) y -= 1.2;
+          if (y < 1.0 && Math.abs(x) > 5.5 && z > -5.0 && z < 8.0) {
+            y -= 3.2;
+            x *= 1.1;
+          }
+
+          const hemisphereGap = 1.85;
+          if (x > 0) x += hemisphereGap; else x -= hemisphereGap;
+
+          brainPositions[i3] = x;
+          brainPositions[i3 + 1] = y;
+          brainPositions[i3 + 2] = z;
+        } else if (i < 18000) {
+          const u = Math.random();
+          const v = Math.random();
+          const theta = u * 2.0 * Math.PI;
+          const phi = Math.acos(2.0 * v - 1.0);
+          const r = 7.2 + Math.sin(phi * 12.0) * 0.5;
+
+          let cx = r * Math.sin(phi) * Math.cos(theta) * 1.25;
+          if (cx > 0) cx += 0.8; else cx -= 0.8;
+          let cy = r * Math.sin(phi) * Math.sin(theta) * 0.7 - 8.5;
+          let cz = r * Math.cos(phi) * 0.85 - 8.5;
+
+          brainPositions[i3] = cx;
+          brainPositions[i3 + 1] = cy;
+          brainPositions[i3 + 2] = cz;
+        } else {
+          const stemProgress = (i - 18000) / 1600;
+          const sy = -4.0 - stemProgress * 14.0;
+          const radius = 2.8 * (1.0 - stemProgress * 0.35);
+          const angle = Math.random() * Math.PI * 2;
+
+          brainPositions[i3] = Math.cos(angle) * radius * 0.85;
+          brainPositions[i3 + 1] = sy;
+          brainPositions[i3 + 2] = Math.sin(angle) * radius * 0.85 - 2.5;
+        }
+      } else {
+        brainPositions[i3] = (Math.random() - 0.5) * 220;
+        brainPositions[i3 + 1] = (Math.random() - 0.5) * 160;
+        brainPositions[i3 + 2] = (Math.random() - 0.5) * 140;
+      }
+
+      if (isAmbientDust) {
+        wavePositions[i3] = (Math.random() - 0.5) * 240;
+        wavePositions[i3 + 1] = (Math.random() - 0.5) * 160;
+        wavePositions[i3 + 2] = (Math.random() - 0.5) * 140;
+      } else {
+        const wx = (Math.random() - 0.5) * 200;
+        const baseFreq = wx * 0.032;
+        const mainY = Math.sin(baseFreq) * 18.0 + Math.cos(baseFreq * 1.5) * 6.0 - 4.0;
+        const mainZ = Math.cos(baseFreq) * 15.0;
+
+        const u1 = Math.random();
+        const u2 = Math.random();
+        const radius = Math.sqrt(-2.0 * Math.log(u1 || 0.001)) * 7.5;
+        const angle = 2.0 * Math.PI * u2;
+
+        wavePositions[i3] = wx;
+        wavePositions[i3 + 1] = mainY + Math.sin(angle) * radius;
+        wavePositions[i3 + 2] = mainZ + Math.cos(angle) * (radius * 1.7);
+      }
+
+      const mixRatio = Math.random();
+      let col;
+      if (isAmbientDust) {
+        col = mixRatio > 0.4 ? cCrispIce.clone() : cLaserBlue.clone();
+      } else {
+        col = mixRatio > 0.25 ? cWhite.clone() : cCrispIce.clone().lerp(cLaserBlue, Math.random() * 0.7);
+      }
+      colors[i3] = col.r;
+      colors[i3 + 1] = col.g;
+      colors[i3 + 2] = col.b;
+
+      currentPositions[i3] = initialPositions[i3];
+      currentPositions[i3 + 1] = initialPositions[i3 + 1];
+      currentPositions[i3 + 2] = initialPositions[i3 + 2];
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(currentPositions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    function createBalancedGlowTexture() {
+      const size = 128;
+      const c = document.createElement('canvas');
+      c.width = size;
+      c.height = size;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+      grad.addColorStop(0, 'rgba(255,255,255,0.70)');
+      grad.addColorStop(0.2, 'rgba(255,255,255,0.55)');
+      grad.addColorStop(0.45, 'rgba(224,242,254,0.25)');
+      grad.addColorStop(0.75, 'rgba(125,211,252,0.06)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, size, size);
+      return new THREE.CanvasTexture(c);
+    }
+
+    const material = new THREE.PointsMaterial({
+      size: 1.2,
+      vertexColors: true,
+      map: createBalancedGlowTexture(),
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      opacity: 0.0
+    });
+
+    const particleSystem = new THREE.Points(geometry, material);
+    particleSystem.position.z = -4;
+    scene.add(particleSystem);
+
+    let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
+    let scrollProgress = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    window.addEventListener('scroll', () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress = Math.min(Math.max(window.scrollY / (maxScroll || 1), 0), 1);
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      updateCamera();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+
+      if (time > 0.8 && material.opacity < 0.46) {
+        material.opacity += 0.005;
+      }
+
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
+      const pos = geometry.attributes.position.array;
+      let formBrain = Math.min(scrollProgress / 0.10, 1.0);
+      let formWave = Math.min(Math.max((scrollProgress - 0.22) / 0.12, 0.0), 1.0);
+
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        const isAmbient = i >= 19600;
+
+        const bX = THREE.MathUtils.lerp(initialPositions[i3], brainPositions[i3], formBrain);
+        const bY = THREE.MathUtils.lerp(initialPositions[i3 + 1], brainPositions[i3 + 1], formBrain);
+        const bZ = THREE.MathUtils.lerp(initialPositions[i3 + 2], brainPositions[i3 + 2], formBrain);
+
+        let targetX = THREE.MathUtils.lerp(bX, wavePositions[i3], formWave);
+        let targetY = THREE.MathUtils.lerp(bY, wavePositions[i3 + 1], formWave);
+        let targetZ = THREE.MathUtils.lerp(bZ, wavePositions[i3 + 2], formWave);
+
+        if (!isAmbient) {
+          if (formWave > 0.01) {
+            const wavePhase = time * 2.0 + targetX * 0.04;
+            targetY += Math.sin(wavePhase) * 4.8 * formWave;
+            targetZ += Math.cos(wavePhase * 0.8) * 3.6 * formWave;
+          }
+        } else {
+          targetY += Math.sin(time * 0.6 + targetX * 0.02) * 1.5;
+        }
+
+        pos[i3] += (targetX - pos[i3]) * 0.12;
+        pos[i3 + 1] += (targetY - pos[i3 + 1]) * 0.12;
+        pos[i3 + 2] += (targetZ - pos[i3 + 2]) * 0.12;
+      }
+
+      geometry.attributes.position.needsUpdate = true;
+
+      const mouseFactor = formWave;
+      particleSystem.rotation.y = time * 0.028 + scrollProgress * Math.PI * 0.75 + (mouseX * 0.2 * mouseFactor);
+      particleSystem.rotation.x = mouseY * 0.12 * mouseFactor;
+
+      const baseDist = window.innerWidth < 768 ? 86 : 68;
+      camera.position.z = baseDist + scrollProgress * 20;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
