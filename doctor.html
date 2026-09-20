@@ -41,6 +41,7 @@
       flex-direction: column;
     }
 
+    /* 상단 헤더 (데스크탑 기준) */
     header {
       width: 100%;
       height: 75px;
@@ -63,6 +64,9 @@
       letter-spacing: 0.5px;
       color: #fff;
       text-decoration: none;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
 
     .brand span {
@@ -76,6 +80,7 @@
       display: flex;
       align-items: center;
       gap: 24px;
+      white-space: nowrap;
     }
 
     .nav-link {
@@ -84,12 +89,18 @@
       font-weight: 600;
       text-decoration: none;
       transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
     .nav-link:hover {
       color: var(--signal-glow);
     }
 
+    .txt-mobile-only {
+      display: none;
+    }
+
+    /* 메인 레이아웃 */
     main {
       flex: 1;
       width: 100%;
@@ -98,6 +109,7 @@
       padding: 70px 6% 120px;
     }
 
+    /* 상단 프로필 헤더 */
     .profile-hero {
       border-bottom: 1px solid var(--line-border);
       padding-bottom: 36px;
@@ -137,6 +149,7 @@
       letter-spacing: -0.3px;
     }
 
+    /* 섹션 레이아웃 */
     .section-block {
       margin-bottom: 56px;
     }
@@ -162,6 +175,7 @@
       background: var(--signal-glow);
     }
 
+    /* 1단 그리드: 학력 / 경력 */
     .edu-exp-grid {
       display: grid;
       grid-template-columns: 1fr 1.3fr;
@@ -284,22 +298,67 @@
       background: rgba(2, 4, 8, 0.95);
     }
 
+    /* =========================================================
+       모바일 전용 최적화 (헤더 1줄 정렬 & 지저분함 해결)
+       ========================================================= */
     @media (max-width: 860px) {
-      header { padding: 0 20px; }
-      main { padding: 50px 6% 80px; }
-      .edu-exp-grid { grid-template-columns: 1fr; gap: 40px; }
-      .bottom-cta-banner { flex-direction: column; text-align: center; gap: 20px; }
-      .btn-consult { width: 100%; text-align: center; }
+      header {
+        height: 60px;
+        padding: 0 16px;
+      }
+      /* 모바일에서는 '두드림 영상자문센터' 서브 텍스트 숨겨 여백 확보 */
+      .brand span {
+        display: none;
+      }
+      .brand {
+        font-size: 1.05rem;
+      }
+      .header-nav {
+        gap: 12px;
+      }
+      .nav-link {
+        font-size: 0.82rem;
+      }
+      /* 긴 문구를 모바일용 짧은 문구로 교체 */
+      .txt-desktop {
+        display: none;
+      }
+      .txt-mobile-only {
+        display: inline;
+      }
+      main {
+        padding: 40px 6% 80px;
+      }
+      .edu-exp-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .bottom-cta-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+      .btn-consult {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- 헤더 (모바일/PC 완벽 반응형 대응) -->
   <header>
     <a href="index.html" class="brand">Do:Dream <span>두드림 영상자문센터</span></a>
     <div class="header-nav">
-      <a href="index.html" class="nav-link">← 센터소개</a>
-      <a href="contact.html" class="nav-link" style="color: var(--signal-glow);">자문/상담문의 →</a>
+      <a href="index.html" class="nav-link">
+        <span class="txt-desktop">← 센터소개</span>
+        <span class="txt-mobile-only">← 소개</span>
+      </a>
+      <a href="contact.html" class="nav-link" style="color: var(--signal-glow);">
+        <span class="txt-desktop">자문/상담문의 →</span>
+        <span class="txt-mobile-only">상담문의 →</span>
+      </a>
     </div>
   </header>
 
@@ -389,7 +448,7 @@
     <div class="bottom-cta-banner">
       <div class="cta-banner-text">
         <h3>신경두경부 영상 협진 및 자문이 필요하십니까?</h3>
-        <p>두드림은 판독을 대행하지 않습니다. 협진을 함께합니다.</p>
+        <p>두드림은 판독을 대행하지 않습니다. 협진을 함께합니다.[cite: 1]</p>
       </div>
       <a href="contact.html" class="btn-consult">자문 / 상담 문의 바로가기 →</a>
     </div>
