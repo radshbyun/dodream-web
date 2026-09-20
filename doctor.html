@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>의료진 소개 | 두드림 영상자문센터</title>
+  <!-- Pretendard 폰트 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <style>
+    :root {
+      --bg-black: #020408;
+      --card-bg: rgba(6, 11, 24, 0.65);
+      --card-border: rgba(224, 242, 254, 0.12);
+      --signal-glow: #bae6fd;
+      --accent-gold: #f59e0b;
+      --line-border: rgba(224, 242, 254, 0.14);
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard", -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: #F8FAFC;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      width: 100%;
+      height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      border-bottom: 1px solid rgba(224, 242, 254, 0.08);
+      background: rgba(2, 4, 8, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .brand span {
+      font-weight: 400;
+      color: #94A3B8;
+      font-size: 0.8rem;
+      margin-left: 6px;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-link {
+      color: #CBD5E1;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--signal-glow);
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 70px 6% 120px;
+    }
+
+    .profile-hero {
+      border-bottom: 1px solid var(--line-border);
+      padding-bottom: 36px;
+      margin-bottom: 50px;
+    }
+
+    .badge-sub {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--signal-glow);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .doc-name {
+      font-size: clamp(2.4rem, 4vw, 3.2rem);
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -1px;
+      line-height: 1.2;
+    }
+
+    .doc-name-en {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #94A3B8;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .doc-title-special {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-top: 14px;
+      letter-spacing: -0.3px;
+    }
+
+    .section-block {
+      margin-bottom: 56px;
+    }
+
+    .sec-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line-border);
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .sec-title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 44px;
+      height: 2px;
+      background: var(--signal-glow);
+    }
+
+    .edu-exp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 50px;
+    }
+
+    .styled-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .styled-list li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 0.98rem;
+      color: #CBD5E1;
+      line-height: 1.65;
+    }
+
+    .styled-list li::before {
+      content: "·";
+      position: absolute;
+      left: 2px;
+      top: -1px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--signal-glow);
+    }
+
+    .paper-item {
+      margin-bottom: 16px;
+      padding-left: 18px;
+      position: relative;
+      font-size: 0.95rem;
+      color: #CBD5E1;
+      line-height: 1.7;
+    }
+
+    .paper-item::before {
+      content: "·";
+      position: absolute;
+      left: 2px;
+      top: -2px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--signal-glow);
+    }
+
+    .paper-role {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #bae6fd;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    .award-name {
+      color: #F8FAFC;
+      font-weight: 600;
+    }
+
+    .bottom-cta-banner {
+      margin-top: 40px;
+      padding: 36px 30px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .cta-banner-text h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .cta-banner-text p {
+      font-size: 0.95rem;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .btn-consult {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #1a0f02;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.3);
+    }
+
+    .btn-consult:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.45);
+      filter: brightness(1.05);
+    }
+
+    footer {
+      padding: 40px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(224, 242, 254, 0.08);
+      font-size: 0.82rem;
+      color: #64748B;
+      background: rgba(2, 4, 8, 0.95);
+    }
+
+    @media (max-width: 860px) {
+      header { padding: 0 20px; }
+      main { padding: 50px 6% 80px; }
+      .edu-exp-grid { grid-template-columns: 1fr; gap: 40px; }
+      .bottom-cta-banner { flex-direction: column; text-align: center; gap: 20px; }
+      .btn-consult { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand">Do:Dream <span>두드림 영상자문센터</span></a>
+    <div class="header-nav">
+      <a href="index.html" class="nav-link">← 센터소개</a>
+      <a href="contact.html" class="nav-link" style="color: var(--signal-glow);">자문/상담문의 →</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="profile-hero">
+      <div class="badge-sub">NEURORADIOLOGIST</div>
+      <h1 class="doc-name">변성환 <span style="font-size: 1.5rem; font-weight: 500; color: #E2E8F0;">대표원장</span></h1>
+      <div class="doc-name-en">Seonghwan Byun, M.D.</div>
+      <div class="doc-title-special">
+        영상의학과 전문의
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="edu-exp-grid">
+        <div>
+          <h2 class="sec-title">학력</h2>
+          <ul class="styled-list">
+            <li>연세대학교 의과대학 의학과 학사</li>
+            <li>연세대학교 의과대학 의학과 박사과정중</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="sec-title">경력</h2>
+          <ul class="styled-list">
+            <li>연세대학교 원주세브란스병원 수련의</li>
+            <li>순천향대학교 부천병원 영상의학과 전공의</li>
+            <li>순천향대학교 부천병원 영상의학과 전문의</li>
+            <li>European Diploma in Neuroradiology (EDiNR) 취득</li>
+            <li>현 강남영상의학과의원 소속</li>
+            <li>현 대한영상의학과의원 소속</li>
+            <li>현 헤셀의원 소속</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="sec-title">학회 활동</h2>
+      <ul class="styled-list">
+        <li>대한영상의학회 정회원 및 회원참여위원</li>
+        <li>대한신경두경부영상의학회 정회원</li>
+        <li>대한영상의학과의사회 정회원</li>
+        <li>Member of RSNA (Radiological Society of North America, 북미방사선의학회)</li>
+        <li>Member of European Society of Neuroradiology (ESNR, 유럽신경두경부영상의학회)</li>
+        <li>European Diploma in Neuroradiology (EDiNR)</li>
+      </ul>
+    </div>
+
+    <div class="section-block">
+      <h2 class="sec-title">수상 내역</h2>
+      <div>
+        <div class="paper-item">
+          <span class="award-name">RSNA 2018</span> (104th Scientific Assembly and Annual Meeting of the Radiological Society of North America)<br>
+          ‘Enjoy the Delicacy of Temporal Bone: From Embryology to Pathology – Part I: Embryology and Congenital Ear Abnormalities’ — <strong>Certificate of Merit</strong>
+        </div>
+        <div class="paper-item">
+          <span class="award-name">AOSPR 2019</span> (19th Annual Scientific Meeting of Asian and Oceanic Society for Paediatric Radiology)<br>
+          ‘All About Temporal Bone!’ — <strong>Silver Medal</strong>
+        </div>
+        <div class="paper-item">
+          <span class="award-name">KSUM Open 2017</span><br>
+          ‘Prenatal Ultrasound of Multiple Gestations: Check Points and Common Abnormalities’ — <strong>Bronze Medal</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="sec-title">주요 논문 및 학술 발표</h2>
+      <div>
+        <div class="paper-item">
+          <strong>Acute vertigo and sensorineural hearing loss from infarction of the vestibulocochlear nerve: A Case Report</strong><br>
+          <em>Medicine</em> <span class="paper-role">제1저자</span>
+        </div>
+        <div class="paper-item">
+          <strong>An Etiology of Many Faces: Non-infectious Meningitis with Leptomeningeal Enhancement on Brain MRI</strong><br>
+          <em>Biocell</em> <span class="paper-role">제1저자</span>
+        </div>
+        <div class="paper-item">
+          <strong>Immunoglobulin G4-Related Disease Unilaterally Involving the Pulmonary Interstitium and Pleura: A Case Report</strong><br>
+          <em>Iranian Journal of Radiology</em> <span class="paper-role">제1저자</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-cta-banner">
+      <div class="cta-banner-text">
+        <h3>신경두경부 영상 협진 및 자문이 필요하십니까?</h3>
+        <p>두드림은 판독을 대행하지 않습니다. 협진을 함께합니다.[cite: 1]</p>
+      </div>
+      <a href="contact.html" class="btn-consult">자문 / 상담 문의 바로가기 →</a>
+    </div>
+  </main>
+
+  <footer>
+    <!-- 이메일 주소 변경 반영 -->
+    <p style="margin-bottom: 8px; color: #94A3B8;">
+      EMAIL: RADSHBYUN@DODREAMRAD.COM &nbsp;|&nbsp; TEL: 010-4844-1526 &nbsp;|&nbsp; 카카오톡 검색: 두드림영상자문
+    </p>
+    <p>© 두드림 영상자문센터 (Do:Dream Radiology Consulting). All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
