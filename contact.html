@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- [검색엔진 색인 및 노출 차단 메타태그] -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="NaverBot" content="noindex, nofollow">
+  <meta name="Yeti" content="noindex, nofollow">
+
   <title>상담 문의 | 두드림 영상자문센터</title>
   <!-- Pretendard 폰트 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
@@ -324,7 +331,6 @@
             <a href="tel:010-4844-1526" class="contact-val">010-4844-1526</a>
           </div>
 
-          <!-- 이메일 주소 및 mailto 링크 변경 반영 -->
           <div class="contact-item">
             <span class="contact-label">이메일</span>
             <a href="mailto:radshbyun@dodreamrad.com" class="contact-val">radshbyun@dodreamrad.com</a>
@@ -417,7 +423,6 @@
 ${message || '내용 없음'}
 `;
 
-      // 전송 목적지 이메일 주소 변경 반영
       const mailtoUrl = `mailto:radshbyun@dodreamrad.com?subject=${subject}&body=${encodeURIComponent(bodyContent)}`;
       
       window.location.href = mailtoUrl;
