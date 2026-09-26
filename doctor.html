@@ -41,7 +41,7 @@
       flex-direction: column;
     }
 
-    /* 상단 헤더 (데스크탑 기준) */
+    /* 상단 헤더 */
     header {
       width: 100%;
       height: 75px;
@@ -149,7 +149,7 @@
       letter-spacing: -0.3px;
     }
 
-    /* 섹션 레이아웃 */
+    /* 섹션 공통 스타일 */
     .section-block {
       margin-bottom: 56px;
     }
@@ -173,6 +173,26 @@
       width: 44px;
       height: 2px;
       background: var(--signal-glow);
+    }
+
+    .sub-sec-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #E2E8F0;
+      letter-spacing: -0.3px;
+      margin: 28px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sub-sec-title::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--signal-glow);
+      border-radius: 50%;
     }
 
     /* 1단 그리드: 학력 / 경력 */
@@ -207,8 +227,9 @@
       color: var(--signal-glow);
     }
 
+    /* 연구 및 발표 개별 아이템 */
     .paper-item {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       padding-left: 18px;
       position: relative;
       font-size: 0.95rem;
@@ -226,15 +247,52 @@
       color: var(--signal-glow);
     }
 
-    .paper-role {
+    .paper-title {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .paper-meta {
+      color: #94A3B8;
+      font-size: 0.9rem;
+    }
+
+    /* 뱃지 스타일 */
+    .role-badge {
       display: inline-block;
-      margin-left: 8px;
-      padding: 2px 8px;
-      font-size: 0.76rem;
+      margin-left: 6px;
+      padding: 1px 7px;
+      font-size: 0.74rem;
       font-weight: 700;
       color: #bae6fd;
       background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    .oral-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    .poster-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #a7f3d0;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: 4px;
       vertical-align: middle;
     }
@@ -244,8 +302,9 @@
       font-weight: 600;
     }
 
+    /* 하단 자문 신청 배너 */
     .bottom-cta-banner {
-      margin-top: 40px;
+      margin-top: 50px;
       padding: 36px 30px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -298,15 +357,12 @@
       background: rgba(2, 4, 8, 0.95);
     }
 
-    /* =========================================================
-       모바일 전용 최적화 (헤더 1줄 정렬 & 지저분함 해결)
-       ========================================================= */
+    /* 모바일 반응형 */
     @media (max-width: 860px) {
       header {
         height: 60px;
         padding: 0 16px;
       }
-      /* 모바일에서는 '두드림 영상자문센터' 서브 텍스트 숨겨 여백 확보 */
       .brand span {
         display: none;
       }
@@ -319,7 +375,6 @@
       .nav-link {
         font-size: 0.82rem;
       }
-      /* 긴 문구를 모바일용 짧은 문구로 교체 */
       .txt-desktop {
         display: none;
       }
@@ -347,7 +402,7 @@
 </head>
 <body>
 
-  <!-- 헤더 (모바일/PC 완벽 반응형 대응) -->
+  <!-- 헤더 -->
   <header>
     <a href="index.html" class="brand">Do:Dream <span>두드림 영상자문센터</span></a>
     <div class="header-nav">
@@ -363,6 +418,7 @@
   </header>
 
   <main>
+    <!-- 상단 프로필 헤더 -->
     <div class="profile-hero">
       <div class="badge-sub">NEURORADIOLOGIST</div>
       <h1 class="doc-name">변성환 <span style="font-size: 1.5rem; font-weight: 500; color: #E2E8F0;">대표원장</span></h1>
@@ -372,6 +428,7 @@
       </div>
     </div>
 
+    <!-- 1. 학력 & 경력 -->
     <div class="section-block">
       <div class="edu-exp-grid">
         <div>
@@ -397,6 +454,7 @@
       </div>
     </div>
 
+    <!-- 2. 학회 활동 -->
     <div class="section-block">
       <h2 class="sec-title">학회 활동</h2>
       <ul class="styled-list">
@@ -409,6 +467,7 @@
       </ul>
     </div>
 
+    <!-- 3. 수상 내역 -->
     <div class="section-block">
       <h2 class="sec-title">수상 내역</h2>
       <div>
@@ -427,33 +486,110 @@
       </div>
     </div>
 
+    <!-- 4. 주요 논문 및 학회 발표 -->
     <div class="section-block">
       <h2 class="sec-title">주요 논문 및 학술 발표</h2>
+      
+      <!-- 학회 발표 서브섹션 -->
+      <div class="sub-sec-title">학술대회 발표 (Conference Presentations)</div>
       <div>
         <div class="paper-item">
-          <strong>Acute vertigo and sensorineural hearing loss from infarction of the vestibulocochlear nerve: A Case Report</strong><br>
-          <em>Medicine</em> <span class="paper-role">제1저자</span>
+          <div class="paper-title">
+            Advances in Neuro-imaging MRI using AI for Diagnosing Pediatric Psychiatric Disorders : The Promising Future
+            <span class="oral-badge">구연발표</span>
+          </div>
+          <div class="paper-meta">ASCAPAP 2026 (12th Congress of the Asian Society for Child and Adolescent Psychiatry and Allied Professions)</div>
         </div>
+
         <div class="paper-item">
-          <strong>An Etiology of Many Faces: Non-infectious Meningitis with Leptomeningeal Enhancement on Brain MRI</strong><br>
-          <em>Biocell</em> <span class="paper-role">제1저자</span>
+          <div class="paper-title">
+            ARIA in the Amyloid-targeting Therapies for Alzheimer's disease : Recent Updates and MR Imaging Features
+            <span class="oral-badge">구연발표</span>
+          </div>
+          <div class="paper-meta">2026 대한신경정신의학회 춘계학술대회</div>
         </div>
+
         <div class="paper-item">
-          <strong>Immunoglobulin G4-Related Disease Unilaterally Involving the Pulmonary Interstitium and Pleura: A Case Report</strong><br>
-          <em>Iranian Journal of Radiology</em> <span class="paper-role">제1저자</span>
+          <div class="paper-title">
+            Ultrasound Neuromodulation: From Planning To Neuronavigation
+            <span class="oral-badge">구연발표</span>
+          </div>
+          <div class="paper-meta">KSUM 2026 (The 57th Annual Congress of the Korean Society of Ultrasound in Medicine)</div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-title">
+            Bridging the Gap: Structure-Function Coupling as the Next Frontier in Epilepsy Imaging
+            <span class="oral-badge">구연발표</span>
+          </div>
+          <div class="paper-meta">Korean Epilepsy Congress 2026 (대한뇌전증학회)</div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-title">
+            Automated Multi-Region Segmentation of the Pineal Gland and Pineal Cysts on T1-Weighted Images
+            <span class="poster-badge">포스터</span>
+          </div>
+          <div class="paper-meta">14th International Congress on MRI (ICMRI 2026)</div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-title">
+            Deep-Learning Choroid-Plexus Segmentation on Routine Clinical MRI: T1-only vs T1+FLAIR vs FreeSurfer Against a Consensus Manual Reference in a Cognitive-Decline Cohort
+            <span class="poster-badge">포스터</span>
+          </div>
+          <div class="paper-meta">14th International Congress on MRI (ICMRI 2026)</div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-title">
+            AI Application in Neuro- and Head and Neck Imaging
+            <span class="oral-badge">구연발표</span>
+          </div>
+          <div class="paper-meta">KCR 2026 (The 82nd Korean Congress of Radiology)</div>
+        </div>
+      </div>
+
+      <!-- 주요 논문 서브섹션 -->
+      <div class="sub-sec-title">주요 게재 논문 (Journal Publications)</div>
+      <div>
+        <div class="paper-item">
+          <div class="paper-title">
+            Acute vertigo and sensorineural hearing loss from infarction of the vestibulocochlear nerve: A Case Report
+            <span class="role-badge">제1저자</span>
+          </div>
+          <div class="paper-meta"><em>Medicine</em></div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-title">
+            An Etiology of Many Faces: Non-infectious Meningitis with Leptomeningeal Enhancement on Brain MRI
+            <span class="role-badge">제1저자</span>
+          </div>
+          <div class="paper-meta"><em>Biocell</em></div>
+        </div>
+
+        <div class="paper-item">
+          <div class="paper-title">
+            Immunoglobulin G4-Related Disease Unilaterally Involving the Pulmonary Interstitium and Pleura: A Case Report
+            <span class="role-badge">제1저자</span>
+          </div>
+          <div class="paper-meta"><em>Iranian Journal of Radiology</em></div>
         </div>
       </div>
     </div>
 
+    <!-- 하단 빠른 상담 연결 배너 -->
     <div class="bottom-cta-banner">
       <div class="cta-banner-text">
         <h3>신경두경부 영상 협진 및 자문이 필요하십니까?</h3>
-        <p>두드림은 판독을 대행하지 않습니다. 협진을 함께합니다.[cite: 1]</p>
+        <p>두드림은 판독을 대행하지 않습니다. 협진을 함께합니다.</p>
       </div>
       <a href="contact.html" class="btn-consult">자문 / 상담 문의 바로가기 →</a>
     </div>
   </main>
 
+  <!-- 푸터 -->
   <footer>
     <p style="margin-bottom: 8px; color: #94A3B8;">
       EMAIL: RADSHBYUN@DODREAMRAD.COM &nbsp;|&nbsp; TEL: 010-4844-1526 &nbsp;|&nbsp; 카카오톡 검색: 두드림영상자문
